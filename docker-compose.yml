@@ -1,10 +1,19 @@
 version: '3.9'
 services:
 #Nombre del servicio
-  apache-php: 
-    container_name: apache
+  asir_apache-php: 
+    container_name: asir_apache
     image: php:7.4-apache
     ports:
       - '80:80'
     volumes:
       - ./html:/var/www/html
+      - ./confApache:/etc/apache2 #Al poner el nombre, llamamos al volumen. De esta
+      #manera, la configuración nos queda fuera del contenedor y podemos editarla.
+volumes:
+  confApache: #Declaración del volumen, el cual usamos más arriba.
+  #Para editar los ficheros, podemos ver los ficheros, haciendo click en  el volumen creado.
+#Y seleccionando explore in dev container.
+
+    
+
