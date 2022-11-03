@@ -13,6 +13,8 @@ Una vez listo, buscaremos documentación de las imágenes necesarias.
 
 Buscamos en docker-hub. Vemos que la imagen de httpd no viene con PHP, para tener una imagen con PHP nos redirige a la imagen de PHP - Apache.
 
+[(https://hub.docker.com/_/php)] > Enlace a la imagen PHP con Apache.
+
 '$ docker run -d -p 80:80 --name my-apache-php-app -v "$PWD":/var/www/html php:7.2-apache'
 
 Este es el código para crear el contenedor. De ahí también sacamos la imagen que tenemos que configurar.
@@ -42,8 +44,35 @@ volumes:
 
 Como vamos a usar un navegador web, mapeamos el puerto 80 al 80 del host.
 
-Seguido, mapeamos la configuración de Apache en un nuevo volumen. Ahora, para tener el volumen independiente al contenedor, lo que hacemos es abrir el volumen en una nueva ventana y descargar toda la configuración de este, guardándola en un directorio nuestro llamado confApache. Después, tenemos que cambiar el mapeo a nuestro directorio con toda la configuración.
+Seguido, mapeamos la configuración de Apache en un nuevo volumen.
+
+[DocumentRoot (https://httpd.apache.org/docs/2.4/mod/core.html#documentroot)] >Documentación para saber el correcto mapeo.
+
 Por defecto, el servidor Apache muestra el contenido de /var/www/html/. Entoces, mapeamos el volumen de nuestra carpeta html a este directorio. Para que veamos si funciona, creamos un index.html con un "Hola mundo", que es lo que se se abre por defecto al acceder.
 
-De esta manera, accedemos a un navegador, a la dirrección de ***localhost***, y se nos podremos ver el contenido de nuestro index.html.
+ Ahora, para tener el volumen independiente al contenedor, lo que hacemos es abrir el volumen en una nueva ventana y descargar toda la configuración de este, guardándola en un directorio nuestro llamado confApache. Después, tenemos que cambiar el mapeo a nuestro directorio con toda la configuración.
+
+
+Accedemos a un navegador, a la dirrección de ***localhost***, y podremos ver el contenido de nuestro index.html.
+
+![(Imagen)](https://github.com/kodo13/proyectoCharlie/blob/main/pictures/Captura%20desde%202022-11-03%2016-35-19.png?raw=true)
+
+>Comprobación de funcionamiento del servidor y visualización página html.
+
+Para ver un PHP en el localhost, creamos un fichero con extensión .php en la misma carpeta html.
+
+```
+<?php 
+
+    echo "Hola mundo!";
+    phpinfo();
+
+?>
+```
+
+Ahora, para visualizar esto, como por defecto muestra el index.html, tenemos que indicar la url completa al fichero php.
+
+![(Imagen)](https://github.com/kodo13/proyectoCharlie/blob/main/pictures/Captura%20desde%202022-11-03%2016-35-19.png?raw=true)
+
+>Visualización de funcionamiento del módulo PHP, mostrando PHPinfo.
 
