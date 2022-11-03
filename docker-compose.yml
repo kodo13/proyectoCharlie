@@ -10,8 +10,8 @@ services:
       - ./html:/var/www/html
       - ./confApache:/etc/apache2 #Al poner el nombre, llamamos al volumen. De esta
       #manera, la configuración nos queda fuera del contenedor y podemos editarla.
-volumes:
-  confApache: #Declaración del volumen, el cual usamos más arriba.
+#volumes:
+#  confApache: #Declaración del volumen, el cual usamos más arriba.
   #Para editar los ficheros, podemos ver los ficheros, haciendo click en  el volumen creado.
 #Y seleccionando explore in dev container.
 
