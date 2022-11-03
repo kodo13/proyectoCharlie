@@ -72,7 +72,7 @@ Para ver un PHP en el localhost, creamos un fichero con extensión .php en la mi
 
 Ahora, para visualizar esto, como por defecto muestra el index.html, tenemos que indicar la url completa al fichero php.
 
-![(Imagen)](https://github.com/kodo13/proyectoCharlie/blob/main/pictures/Captura%20desde%202022-11-03%2016-35-19.png?raw=true)
+![(Imagen)](https://github.com/kodo13/proyectoCharlie/blob/main/pictures/Captura%20desde%202022-11-03%2017-21-37.png?raw=true)
 
 >Visualización de funcionamiento del módulo PHP, mostrando PHPinfo.
 
