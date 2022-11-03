@@ -54,7 +54,21 @@ Seguido, mapeamos la configuración de Apache en un nuevo volumen.
 
 Por defecto, el servidor Apache muestra el contenido de /var/www/html/. Entoces, mapeamos el volumen de nuestra carpeta html a este directorio. Para que veamos si funciona, creamos un index.html con un "Hola mundo", que es lo que se se abre por defecto al acceder.
 
- Ahora, para tener el volumen independiente al contenedor, lo que hacemos es abrir el volumen en una nueva ventana y descargar toda la configuración de este, guardándola en un directorio nuestro llamado confApache. Después, tenemos que cambiar el mapeo a nuestro directorio con toda la configuración.
+Para tener el volumen independiente al contenedor, primero lo que hacemos es crear un volumen con lo que queremos mapear, en este caso la configuración de apache2.
+A la misma altura que services, tenemos que crear el volumen sobre el cual hemos mapeado la configuración de apache.
+
+Ahora, si queremos tener la configuración en local, podemos ejecutar el comando docker cp, que copia ficheros del contenedor al local o al revés.
+
+` docker cp asir_apache-php:/etc/apache2 . ` 
+> Comando para copiar la configuración en el directorio del proyecto.
+
+Otra manera es abrir en una nueva ventana del volumen y descargar uno por uno cada directorio y guardarlo en el directorio local.
+
+Después, tenemos que cambiar que en vez de utilizar el volumen externo, utilizar el volumen local.
+
+![(Imagen)](https://github.com/kodo13/proyectoCharlie/blob/main/pictures/Captura%20desde%202022-11-03%2016-39-45.png?raw=true)
+
+
 ***
 
 Accedemos a un navegador, a la dirrección de ***localhost***, y podremos ver el contenido de nuestro index.html.
