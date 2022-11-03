@@ -15,7 +15,9 @@ Buscamos en docker-hub. Vemos que la imagen de httpd no viene con PHP, para tene
 
 [(https://hub.docker.com/_/php)] > Enlace a la imagen PHP con Apache.
 
-'$ docker run -d -p 80:80 --name my-apache-php-app -v "$PWD":/var/www/html php:7.2-apache'
+```
+$ docker run -d -p 80:80 --name my-apache-php-app -v "$PWD":/var/www/html php:7.2-apache
+```
 
 Este es el código para crear el contenedor. De ahí también sacamos la imagen que tenemos que configurar.
 
