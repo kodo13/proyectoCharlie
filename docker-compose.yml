@@ -6,14 +6,55 @@ services:
     image: php:7.4-apache
     ports:
       - '80:80'
+      - '8000:8000'
+    networks:
+      bind9_subnet:
+        ipv4_address: 10.0.1.250 #Establecemos una IP fija a nuestro servidor apache.
     volumes:
       - ./html:/var/www/html
-      - ./confApache:/etc/apache2 #Al poner el nombre, llamamos al volumen. De esta
+      - ./confApache:/etc/apache2 
+      
+      #Al poner el nombre, llamamos al volumen. De esta
       #manera, la configuración nos queda fuera del contenedor y podemos editarla.
 #volumes:
 #  confApache: #Declaración del volumen, el cual usamos más arriba.
   #Para editar los ficheros, podemos ver los ficheros, haciendo click en  el volumen creado.
 #Y seleccionando explore in dev container.
+  bind9:
+    container_name: bind9
+    image: internetsystemsconsortium/bind9:9.16
+    volumes:
+      - /home/dony/SRI/proyectoCharlie/confDNS/conf:/etc/bind
+      - /home/dony/SRI/proyectoCharlie/confDNS/zonas:/var/lib/bind
+    networks:
+      bind9_subnet:
+        ipv4_address: 10.0.1.254
+  firefox:
+    image: lscr.io/linuxserver/firefox:latest
+    container_name: firefox
+    security_opt:
+      - seccomp:unconfined #optional
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+    volumes:
+      - /home/dony/SRI/proyectoCharlie/firefox:/config
+    ports:
+      - 3000:3000
+    networks:
+      bind9_subnet:
+        ipv4_address: 10.0.1.249
+    dns:                
+      - 10.0.1.254     
+      #En el cliente de firefox, le tenemos que poner cual es
+    #el DNS al que tiene que preguntar para la resolución de nombres.   
+    shm_size: "1gb"
+    restart: unless-stopped
+networks:
+ bind9_subnet: 
+  external: true
+                      
 
     
 

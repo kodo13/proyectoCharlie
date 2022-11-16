@@ -1,0 +1,2 @@
+https:firefox-settings-attachments.cdn.mozilla.net:443:.::3	0	19305	https:firefox-settings-attachments.cdn.mozilla.net:443:firefox-settings-attachments.cdn.mozilla.net:443::n:1670612992:h3:y:1668015992:n::|n:y:
+https:tracking-protection.cdn.mozilla.net:443:.:^firstPartyDomain=safebrowsing.86868755-6b82-4842-b301-72671a0db32e.mozilla:3	0	19305	https:tracking-protection.cdn.mozilla.net:443:tracking-protection.cdn.mozilla.net:443::n:1670614044:h3:y:1668015992:n:^firstPartyDomain=safebrowsing.86868755-6b82-4842-b301-72671a0db32e.mozilla:|n:y:
