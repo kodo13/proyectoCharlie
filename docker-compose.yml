@@ -20,7 +20,9 @@ services:
 #  confApache: #Declaración del volumen, el cual usamos más arriba.
   #Para editar los ficheros, podemos ver los ficheros, haciendo click en  el volumen creado.
 #Y seleccionando explore in dev container.
-  bind9:
+
+#Añadimos servicio de DNS.
+  bind9: 
     container_name: bind9
     image: internetsystemsconsortium/bind9:9.16
     volumes:
@@ -28,7 +30,7 @@ services:
       - /home/dony/SRI/proyectoCharlie/confDNS/zonas:/var/lib/bind
     networks:
       bind9_subnet:
-        ipv4_address: 10.0.1.254
+        ipv4_address: 10.0.1.254 #IP fija del DNS.
   firefox:
     image: lscr.io/linuxserver/firefox:latest
     container_name: firefox
