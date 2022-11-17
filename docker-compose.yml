@@ -11,7 +11,7 @@ services:
       bind9_subnet:
         ipv4_address: 10.0.1.250 #Establecemos una IP fija a nuestro servidor apache.
     volumes:
-      - ./html:/var/www/html
+      - ./html:/var/www/html ##Mapeo de nuestra carpeta local con el DocumentRoot
       - ./confApache:/etc/apache2 
       
       #Al poner el nombre, llamamos al volumen. De esta
