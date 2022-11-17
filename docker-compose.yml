@@ -40,8 +40,8 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=Europe/London
-    volumes:
-      - /home/dony/SRI/proyectoCharlie/firefox:/config
+    #volumes:
+    #  - /home/dony/SRI/proyectoCharlie/firefox:/config
     ports:
       - 3000:3000
     networks:

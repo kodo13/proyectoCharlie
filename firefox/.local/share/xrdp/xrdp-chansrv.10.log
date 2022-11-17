@@ -1,2 +1,6 @@
-[20221117-11:30:42] [INFO ] Socket 12: AF_UNIX connection received
-[20221117-11:30:43] [INFO ] sound_process_training: round trip time 106
+[20221117-15:44:32] [INFO ] Socket 12: AF_UNIX connection received
+[20221117-15:44:33] [INFO ] sound_process_training: round trip time 102
+[20221117-15:44:51] [INFO ] Socket 14: AF_UNIX connection received
+[20221117-15:44:51] [INFO ] sound_process_training: round trip time 107
+[20221117-15:46:10] [INFO ] Socket 14: AF_UNIX connection received
+[20221117-15:46:10] [INFO ] sound_process_training: round trip time 124

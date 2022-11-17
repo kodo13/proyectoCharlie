@@ -274,5 +274,16 @@ Teníamos el directorio html creado de antes, con los respectivos directorios de
 
 Situados en la ruta donde tenemos nuestro proyecto con todos los directorios y el docker-compose, ejecutamos el comando `docker-compose up` para arrancar los servicios.
 
+Una vez arrancados, podemos probar si el cliente tiene conexión con el DNS abriendo una terminal y haciendo ping al DNS y al apache. Otra forma mucho más visual es abriendo nuestro navegador y conectarnos al cliente, poniendo la IP del cliente y el puerto al que está mapeado.
+
+Imagen conexión 
+
+Una vez conectados, intentamos acceder al subdominio de *oscuras.fabulas.com* y ver si nos resuelve.
+imagen
+
+>Prueba de conexión a maravillosas.fabulas.com
+
+
+
 
 
