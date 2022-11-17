@@ -51,13 +51,25 @@ volumes:
 ***
 
 Como vamos a usar un navegador web, mapeamos el puerto 80 al 80 del host.
-
-Seguido, mapeamos la configuración de Apache en un nuevo volumen.
+```
+ ports:
+      - '80:80'
+```
 
 [DocumentRoot](https://httpd.apache.org/docs/2.4/mod/core.html#documentroot)
 > Documentación para saber el correcto mapeo.
 
-Por defecto, el servidor Apache muestra el contenido de /var/www/html/. Entoces, mapeamos el volumen de nuestra carpeta html a este directorio. Para que veamos si funciona, creamos un index.html con un "Hola mundo", que es lo que se se abre por defecto al acceder.
+Seguido, mapeamos la configuración de Apache en un nuevo volumen.
+```
+volumes:
+      - ./html:/var/www/html ##Mapeo de nuestra carpeta local con el DocumentRoot
+      - confApache:/etc/apache2 
+
+```
+
+
+
+
 
 Para tener el volumen independiente al contenedor, primero lo que hacemos es crear un volumen con lo que queremos mapear, en este caso la configuración de apache2.
 A la misma altura que services, tenemos que crear el volumen sobre el cual hemos mapeado la configuración de apache.
@@ -79,6 +91,7 @@ Después, tenemos que cambiar que en vez de utilizar el volumen externo, utiliza
 > Cambio del volumen a usar.
 
 ***
+Por defecto, el servidor Apache muestra el contenido de /var/www/html/. Entoces, mapeamos el volumen de nuestra carpeta html a este directorio. Para que veamos si funciona, creamos un index.html con un "Hola mundo", que es lo que se se abre por defecto al acceder.
 
 Accedemos a un navegador, a la dirrección de ***localhost***, y podremos ver el contenido de nuestro index.html.
 
@@ -108,9 +121,9 @@ Ahora, para visualizar esto, como por defecto muestra el index.html, tenemos que
 ---
 # Configuración DNS
 
-Queremos configurar un servidor DNS que nos resuelva dos dominios, los cuales apuntan a la IP fija de nuestro apache. 
+Queremos configurar un servidor DNS que nos resuelva dos subdominios, los cuales apuntan a la IP fija de nuestro apache y que ertenece al dominio de fabulas.com.
 
-Estos dominios serán: 
+Estos subdominios serán: 
 
 - oscuras.fabulas.com
 - maravillosas.fabulas.com
@@ -151,14 +164,25 @@ Primero editamos el nombre del fichero de nuestra zona a *db.fabulas.com*.
 
 Le damos un nombre a nuestro registro SOA, ns.fabulas.com, siendo este  nuestro dominio.
 
-Además, ya añadimos el registro de tipo A (Adress). Este es un registro de dirección, el cual nos devuelve una dirección IP.
+`@		IN SOA	ns.fabulas.com. some.email.address.`
+
+Además, ya añadimos el registro de tipo A (Address). Este es un registro de dirección, el cual nos devuelve una dirección IP.
 
 Como queremos que sea el apache el que almacene nuestros dominios, entonces asignamos la IP de nuestro servidor apache.
+
+`ns		IN A 	10.0.1.254`
 #### *Configuración dominios*
 
 Un dominio es el de *oscuras.fabulas.com*, que es el que va asignado directamente a la IP del apache. 
 
 EL otro dominio es el de *maravillosas.fabulas.com*, que está configurada con un tipo de registro CNAME, que es el alias que apunta a oscuras. De esta forma, podremos acceder a dos dominios distintos usando la misma IP.
+
+```
+oscuras	IN A	10.0.1.250
+maravillosas	IN CNAME    oscuras
+
+```
+
 
 ![(Imagen)](https://github.com/kodo13/proyectoCharlie/blob/main/pictures/conf_zonas.png?raw=true)
 
@@ -313,14 +337,13 @@ Otra forma mucho más visual es abriendo nuestro navegador y conectarnos al clie
 
 ![(Imagen)](https://github.com/kodo13/proyectoCharlie/blob/main/pictures/conexionCliente.png?raw=true)
 
+---
 Una vez conectados, intentamos acceder al subdominio de *oscuras.fabulas.com* y ver si nos resuelve.
 
 ![(Imagen)](https://github.com/kodo13/proyectoCharlie/blob/main/pictures/oscuras.png?raw=true)
 
-
->Prueba de conexión a maravillosas.fabulas.com
-
+---
 ![(Imagen)](https://github.com/kodo13/proyectoCharlie/blob/main/pictures/maravillosas.png?raw=true)
 
-
+>Prueba de conexión a maravillosas.fabulas.com
 
