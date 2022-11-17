@@ -26,8 +26,8 @@ services:
     container_name: bind9
     image: internetsystemsconsortium/bind9:9.16
     volumes:
-      - /home/dony/SRI/proyectoCharlie/confDNS/conf:/etc/bind
-      - /home/dony/SRI/proyectoCharlie/confDNS/zonas:/var/lib/bind
+      - ./conf:/etc/bind
+      - ./zonas:/var/lib/bind
     networks:
       bind9_subnet:
         ipv4_address: 10.0.1.254 #IP fija del DNS.

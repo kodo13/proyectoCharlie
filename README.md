@@ -128,6 +128,25 @@ Una vez bajada la configuración del DNS a nuestra carpeta de confDNS, ahora pro
 
 ### *Configuración ficheros Zonas*
 
+
+
+```
+$TTL 38400	; 10 hours 40 minutes
+@		IN SOA	ns.fabulas.com. some.email.address. (
+				10000002   ; serial
+				10800      ; refresh (3 hours)
+				3600       ; retry (1 hour)
+				604800     ; expire (1 week)
+				38400      ; minimum (10 hours 40 minutes)
+				)
+@		IN NS	ns.fabulas.com.
+ns		IN A 	10.0.1.254
+oscuras	IN A	10.0.1.250
+maravillosas	IN CNAME    oscuras
+alias	IN TXT    mensaje
+
+```
+
 Primero editamos el nombre del fichero de nuestra zona a *db.fabulas.com*.
 
 Le damos un nombre a nuestro registro SOA, ns.fabulas.com, siendo este  nuestro dominio.
@@ -141,7 +160,7 @@ Un dominio es el de *oscuras.fabulas.com*, que es el que va asignado directament
 
 EL otro dominio es el de *maravillosas.fabulas.com*, que está configurada con un tipo de registro CNAME, que es el alias que apunta a oscuras. De esta forma, podremos acceder a dos dominios distintos usando la misma IP.
 
-falta imagen
+![(Imagen)](https://github.com/kodo13/proyectoCharlie/blob/main/pictures/conf_zonas.png?raw=true)
 
 >El registro DNS CNAME funciona como un alias para los nombres de dominio que comparten una misma dirección IP.
 
@@ -151,6 +170,7 @@ Primero accedemos al fichero *named.conf.local* y editamos nuestra zona, dándol
 
 Además, tenemos que asegurarnos que la referencia a file apunte a nuestro fichero de la zona.
 
+![(Imagen)](https://github.com/kodo13/proyectoCharlie/blob/main/pictures/conf_zone.png?raw=true)
 
 ## Configuración *docker-compose*
 - #### Añadimos el servicio de DNS
@@ -174,7 +194,13 @@ Es muy importante mapear los volumes con el directorio de nuestro proyecto, que 
 ```
 Una vez listo, añadimos la IP fija también al servidor apache. Tenemos que asegurarnos de usar la misma red del DNS.
 
-Imagen ip fija Apache
+```
+networks:
+      bind9_subnet:
+        ipv4_address: 10.0.1.250 #Establecemos una IP fija a nuestro servidor apache.
+```
+
+![(Imagen)](https://github.com/kodo13/proyectoCharlie/blob/main/pictures/IP_fija_apache.png?raw=true)
 
 - #### Añadimos el servicio del cliente firefox.
 
@@ -235,9 +261,9 @@ Imagen ip fija Apache
 
   ```
 
-- Añadir el dns. 
+- Añadir el DNS. 
 
-  Muy importante para que cuando hagamos una consulta escribiendo el dominio, este sea capaz de saber a quien preguntar y que se resuleva con éxito.
+  Muy importante para que cuando hagamos una consulta escribiendo el dominio, este sea capaz de saber a quien preguntar y que se resuelva con éxito.
 
 
   ```
@@ -260,13 +286,19 @@ A nosotros nos interesan 4 específicos, siendo estos:
     - Aquí tenemos todos los sitios disponibles.
 - sites-enabled
     - En este directrio, tenemos todos los sitios que tengamos habilitados, los que no estén en este directorio no estarán activos.
+    ![(Imagen)](https://github.com/kodo13/proyectoCharlie/blob/main/pictures/sitio1.png?raw=true)
+    >Sitio 1. Vemos que permite conexión desde cualquier IP al puerto 80. Aquí también tenemos que descomentar la línea de ServerName y escribir el nombre del subdominio al que queremos acceder y así también poder acceder a uno u otro que están en la misma IP.
+
+    ![(Imagen)](https://github.com/kodo13/proyectoCharlie/blob/main/pictures/site2.png?raw=true)
+    >Sitio 2
 - ports.conf
     - Configuración de los puertos de escucha.
+    ![(Imagen)](https://github.com/kodo13/proyectoCharlie/blob/main/pictures/ports.png?raw=true)
 
 ### Creación de los index de cada sitio
 
 Teníamos el directorio html creado de antes, con los respectivos directorios de site1 y site2. En estos tenemos que crear los index.html, los cuales se mostrarán al acceder desde oscuras.fabulas.com y maravillosas.fabulas.com
-
+![(Imagen)](https://github.com/kodo13/proyectoCharlie/blob/main/pictures/creacionSitios.png?raw=true)
 
 ----
 ----
@@ -274,16 +306,21 @@ Teníamos el directorio html creado de antes, con los respectivos directorios de
 
 Situados en la ruta donde tenemos nuestro proyecto con todos los directorios y el docker-compose, ejecutamos el comando `docker-compose up` para arrancar los servicios.
 
-Una vez arrancados, podemos probar si el cliente tiene conexión con el DNS abriendo una terminal y haciendo ping al DNS y al apache. Otra forma mucho más visual es abriendo nuestro navegador y conectarnos al cliente, poniendo la IP del cliente y el puerto al que está mapeado.
+Una vez arrancados, podemos probar si el cliente tiene conexión con el DNS abriendo una terminal y haciendo ping al DNS y al apache. 
 
-Imagen conexión 
+Otra forma mucho más visual es abriendo nuestro navegador y conectarnos al cliente, poniendo la IP del cliente y el puerto al que está mapeado.
+
+
+![(Imagen)](https://github.com/kodo13/proyectoCharlie/blob/main/pictures/conexionCliente.png?raw=true)
 
 Una vez conectados, intentamos acceder al subdominio de *oscuras.fabulas.com* y ver si nos resuelve.
-imagen
+
+![(Imagen)](https://github.com/kodo13/proyectoCharlie/blob/main/pictures/oscuras.png?raw=true)
+
 
 >Prueba de conexión a maravillosas.fabulas.com
 
-
+![(Imagen)](https://github.com/kodo13/proyectoCharlie/blob/main/pictures/maravillosas.png?raw=true)
 
 
 
