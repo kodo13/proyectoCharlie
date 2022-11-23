@@ -347,3 +347,16 @@ Una vez conectados, intentamos acceder al subdominio de *oscuras.fabulas.com* y 
 
 >Prueba de conexión a maravillosas.fabulas.com
 
+----
+----
+# Configuración SSL
+
+Con los servicios levantados, abrimos la shell del apache2.
+
+Ejecutamos comando desde la shell del apache
+
+
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/apache-selfsigned.key -out /etc/ssl/certs/apache-selfsigned.crt
+
+Crear sitio ssl por defecto en sites-available
+
