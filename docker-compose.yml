@@ -44,7 +44,7 @@ services:
     #volumes:
     #  - /home/dony/SRI/proyectoCharlie/firefox:/config
     ports:
-      - 3000:3000
+      - 5000:5000
     networks:
       bind9_subnet:
         ipv4_address: 10.0.1.249
@@ -53,6 +53,22 @@ services:
       #En el cliente de firefox, le tenemos que poner cual es
     #el DNS al que tiene que preguntar para la resolución de nombres.   
     shm_size: "1gb"
+    restart: unless-stopped
+  wireshark:
+    image: lscr.io/linuxserver/wireshark:latest
+    container_name: wireshark
+    cap_add:
+      - NET_ADMIN
+    security_opt:
+      - seccomp:unconfined #optional
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+    volumes:
+      - ./wireshark:/config
+    ports:
+      - 3000:3000 #optional
     restart: unless-stopped
 networks:
  bind9_subnet: 
