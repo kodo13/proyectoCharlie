@@ -353,7 +353,7 @@ Una vez conectados, intentamos acceder al subdominio de *oscuras.fabulas.com* y 
 
 El servicio SSL hace la escucha por el puerto 443, por eso, tenemos que modificar el docker compose añadiendo este puerto.
 
-imagen añadir puerto
+![(Imagen)]()imagen añadir puerto
 
 Ahora levantamos los servicios ejecutando `docker-compose up` desde el directorio donde tengamos el fichero docker-compose.yml.
 
@@ -384,11 +384,11 @@ Ahora vamos a los sites-available y vemos que tenemos un sitio que se llama defa
 
 - Creado el directorio, en el fichero de *default-ssl.conf*, en DocumentRoot, le ponemos la ruta al directorio ssl creado anteriormente.
 
-imagen cambio documentroot
+![(Imagen)](https://github.com/kodo13/proyectoCharlie/blob/main/pictures/sitessl.png?raw=true)
 
 - En el mismo fichero, tenemos que asegurarnos de que tenemos bien mapeados los ficheros de los certificados. En mi caso, son las líneas 43 y 44. 
 
-imagen mapeocerts
+![(Imagen)](https://github.com/kodo13/proyectoCharlie/blob/main/pictures/mapeocerts.png?raw=true)
 
 Observamos que tenemos que poner la ruta y el nombre exacto de nuestros ficheros con las keys.
 
@@ -402,15 +402,62 @@ Una vez listo, vamos al contenedor del apache y, haciendo ciclk derecho sobre el
 
 Desde el navegador del host, accedemos a https://localhost y nos debería aparecer el contenido del index.html del ssl.
 
-imagen comprobacion host
+![(Imagen)](https://github.com/kodo13/proyectoCharlie/blob/main/pictures/comprobacion.png?raw=true)
 
 Otra manera de hacer la comprobación es mediante un cliente, nos conectamos al cliente firefox que tenemos creado. Lo hacemos mediante su IP y su puerto, *10.0.1.249:3000*.
 
 Una vez dentro, accedemos a nuestro dominio https://oscuras.fabulas.com. 
 
-imagen sitio seguro y no
+![(Imagen)](https://github.com/kodo13/proyectoCharlie/blob/main/pictures/aviso.png?raw=true)
+>Nos salta aviso de que puede que no sea un sitio seguro. Le damos a Avance aceptamos.
+
+![(Imagen)](https://github.com/kodo13/proyectoCharlie/blob/main/pictures/accesoSeguroyNo.png?raw=true)
+> Observamos a la izquierda el acceso seguro mediante el https y a la izquierda, el acceso no seguro, al cual accedemos directamente por el dominio.
+
 
 Observamos que podemos acceder a la misma página de una forma segura con el https y otra no seguras, simplemente poniendo el dominio.
 
 # Autentificación, Autorización y Control de Acceso
 
+Primero creamos una nueva carpeta llamada passwords, dentro del directorio de confApache.
+
+Tenemos que crear un archivo de contraseñas, para ello usaremos la utilidad htpasswd que ya viene con Apache.
+
+Abrimos la shell de nuestro Apache y nos movemos a la carpeta de passwoords. Una vez ahí, ejecutamos el comando htpasswd -c pass ionut (siendo pass el nombre de un fichero que se creará e ionut el nombre del usuario).
+
+Se nos pedirá una contraseña e introducirla una segunda vez para comprobar que sea la misma.
+
+Si htpasswd no está en nuestra ruta, tendremos que escribir la ruta completa al archivo para ejecutarlo.
+
+El siguiente paso es configurar el servidor para que solicite una contraseña y decirle al servidor a qué usuarios se les permite el acceso. Esto lo haremos editando el fichero del sitio ssl, *default-ssl.con*.
+
+Tenemos que añadir un nuevo directory con una configuración básica.
+![Imagen](https://github.com/kodo13/proyectoCharlie/blob/main/pictures/confAutorizaci%C3%B3n.png?raw=true)
+
+```
+<Directory /var/www/html/ssl >
+            AuthType Basic
+            AuthName "Restricted Files"
+            AuthUserFile /etc/apache2/passwords/pass
+            Require user ionut
+        </Directory>
+
+```
+> Configuración
+- Al lado de *directory* ponemos la ruta del directorio donde tenemos el sitio ssl.
+- En *AuthUserFile*, indicamos ruta al fichero de la contraseña.
+- Añadimos nombre del usuario con acceso en la útlima línea, *Require user*.
+
+## Comprobación del funcionamiento
+
+Podemos hacer la comprobación desde el navegador entrando por https://localhost o a través del cliente de firefox.
+
+Lo vamos a hacer a través del cliente de firefox, nos conectamos al cliente y, en el navegador, escribimos https://oscuras.fabulas.com.
+
+***Importante*** Para acceder a través del dominio, tenemos que tener el directory también configurado en el virtualhost donde tengamos configurado el ServerName.
+
+![Imagen](https://github.com/kodo13/proyectoCharlie/blob/main/pictures/comprobaar%20autentificacion.png?raw=true)
+> Ventana emergente en la que se nos pide que iniciemos sesión. Introducimos los datos del usuario que añadimos en la configuración y la contraseña establecida.
+
+![Imagen](https://github.com/kodo13/proyectoCharlie/blob/main/pictures/yadentro.png?raw=true)
+> Conexión establecida, cemos que al lado del cando nos aparece una llave, lo que nos indica que hemos accedido a través de la autenficación.
