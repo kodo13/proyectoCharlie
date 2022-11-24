@@ -512,3 +512,14 @@ db:
 
 ### Conexión al phpmyadmin
 
+Para conectarnos a PHPmyAdmin, ponemos la IP que le pusimos en el navegador y ya se nos abrirá. 
+
+![Imagen](https://github.com/kodo13/proyectoCharlie/blob/main/pictures/php.png?raw=true)
+> Página de inicio de phpmyadmin. Introducimos los datos del usuario que creamos y escribimos la contraseña establecida para realizar la conexión.
+
+Ya conectados, hemos creado una nueva tabla con 3 columnas en las que se hicieron algunos inserts.
+
+![Imagen](https://github.com/kodo13/proyectoCharlie/blob/main/pictures/insercondatos.png?raw=true)
+> Vista de los datos de la base de datos asir2.
+
+
