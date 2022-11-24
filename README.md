@@ -461,3 +461,54 @@ Lo vamos a hacer a través del cliente de firefox, nos conectamos al cliente y, 
 
 ![Imagen](https://github.com/kodo13/proyectoCharlie/blob/main/pictures/yadentro.png?raw=true)
 > Conexión establecida, cemos que al lado del cando nos aparece una llave, lo que nos indica que hemos accedido a través de la autenficación.
+
+# MySQL y PHPmyAdmin
+
+Vamos a añadir dos nuevos servicios, el de MySQL y PHPmyAdmin.
+
+Añadimos la siguiente configuración en el codker-compose.yml.
+
+> *Configuración phpmyadmin*
+
+```
+phpmyadmin:
+        image: phpmyadmin/phpmyadmin
+        depends_on: #indica que hasta que no esté levantado el otro servicio, que no se arranque este.
+            - db
+        links: 
+            - db:db
+        networks:
+          bind9_subnet:
+            ipv4_address: 10.0.1.248
+        ports:
+            - 8080:80
+        environment:
+            MYSQL_USER: dera
+            MYSQL_PASSWORD: castelao
+            MYSQL_ROOT_PASSWORD: castelao
+```
+
+> *Configuración mysql*
+
+```
+db:
+        image: mysql
+        ports: 
+            - "3306:3306"
+        environment:
+            MYSQL_DATABASE: asir2
+            MYSQL_USER: dera
+            MYSQL_PASSWORD: castelao
+            MYSQL_ROOT_PASSWORD: castelao
+        volumes:
+            - ./mysql:/docker-entrypoint-initdb.d
+            - ./mysql:/var/lib/mysql
+        networks:
+            bind9_subnet:
+              ipv4_address: 10.0.1.247
+```
+
+## Comprobación del funcionamiento
+
+### Conexión al phpmyadmin
+
