@@ -351,12 +351,66 @@ Una vez conectados, intentamos acceder al subdominio de *oscuras.fabulas.com* y 
 ----
 # Configuración SSL
 
-Con los servicios levantados, abrimos la shell del apache2.
+El servicio SSL hace la escucha por el puerto 443, por eso, tenemos que modificar el docker compose añadiendo este puerto.
 
-Ejecutamos comando desde la shell del apache
+imagen añadir puerto
 
+Ahora levantamos los servicios ejecutando `docker-compose up` desde el directorio donde tengamos el fichero docker-compose.yml.
 
-openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/apache-selfsigned.key -out /etc/ssl/certs/apache-selfsigned.crt
+Una vez arrancado, abrimos la shell del Apache, hacemos click derecho sobre dicho contenedor y le damos a *Attach Shell*. En esta shell, ejecutamos el comando `a2enmod ssl` para habilitar el módulo Apache con el nombre Mod_ssl. 
 
-Crear sitio ssl por defecto en sites-available
+Nos puede dar un error si el módulo ya está habilitado, si lo está, lo borramos del directorio de mods-enabled y después ejecutamos el comando otra vez. Una vez habilitado, tenemos que reiniciar el servicio para que se hagan efectivos los cambios.
+
+## Generar certificados SSL
+
+Primero creamos una carpeta dentro de confApache llamada certs, donde guardaremos los certificados. 
+
+Nos movemos a esta carpeta `cd /ect/apache2/certs`, para posteriormente generar los certificados.
+
+Para generar los certificados, ejecutamos le siguiente comando: 
+
+```
+openssl req -new -newkey rsa:4096 -x509 -sha256 -days 365 -nodes -out apache-certificate.crt -keyout apache.key
+
+```
+
+Se nos pedirá una serie de información, la cubrimos y listo, tendremos los certificados creados correctamente.
+
+## Crear y habilitar sitio SSL 
+
+Ahora vamos a los sites-available y vemos que tenemos un sitio que se llama default-ssl.conf. Abrimos este fichero para cambiar la configuración a nuestro entorno.
+
+- Antes de nada, creamos dentro del directorio *html*, una carpeta con el nombre de *ssl*, donde creamos también un *index.html* que nos indique que funcione el servicio ssl.
+
+- Creado el directorio, en el fichero de *default-ssl.conf*, en DocumentRoot, le ponemos la ruta al directorio ssl creado anteriormente.
+
+imagen cambio documentroot
+
+- En el mismo fichero, tenemos que asegurarnos de que tenemos bien mapeados los ficheros de los certificados. En mi caso, son las líneas 43 y 44. 
+
+imagen mapeocerts
+
+Observamos que tenemos que poner la ruta y el nombre exacto de nuestros ficheros con las keys.
+
+### Habilitar sitio SSL
+
+Desde la shell del apache, ejecutamos el comando `a2ensite dafault-ssl.conf` para habilitarlo. 
+
+Una vez listo, vamos al contenedor del apache y, haciendo ciclk derecho sobre el, le damos a restart para que se establezcan los cambios.
+
+## Comprobación del funcionamiento del sitio SSL
+
+Desde el navegador del host, accedemos a https://localhost y nos debería aparecer el contenido del index.html del ssl.
+
+imagen comprobacion host
+
+Otra manera de hacer la comprobación es mediante un cliente, nos conectamos al cliente firefox que tenemos creado. Lo hacemos mediante su IP y su puerto, *10.0.1.249:3000*.
+
+Una vez dentro, accedemos a nuestro dominio https://oscuras.fabulas.com. 
+
+imagen sitio seguro y no
+
+Observamos que podemos acceder a la misma página de una forma segura con el https y otra no seguras, simplemente poniendo el dominio.
+
+# Autentificación, Autorización y Control de Acceso
 

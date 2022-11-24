@@ -57,6 +57,9 @@ services:
   wireshark:
     image: lscr.io/linuxserver/wireshark:latest
     container_name: wireshark
+    depends_on:
+      - asir_apache-php
+      - firefox
     cap_add:
       - NET_ADMIN
     security_opt:
